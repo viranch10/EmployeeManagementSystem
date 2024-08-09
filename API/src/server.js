@@ -45,6 +45,8 @@ const typeDefs = `
     id: ID!
     firstname: String!
     lastname: String!
+    dateOfBirth: GraphQLDate!
+    retirementDate: GraphQLDate!
     age: Int!
     dateOfJoining: GraphQLDate!
     title: String!
@@ -56,6 +58,7 @@ const typeDefs = `
   input EmployeeInput {
     firstname: String!
     lastname: String!
+    dateOfBirth: GraphQLDate!
     age: Int!
     dateOfJoining: GraphQLDate!
     title: String!
@@ -86,12 +89,32 @@ const resolvers = {
   GraphQLDate,
   Query: {
     list: async () => {
-      const employeesFromDB = await db.collection("employees").find().toArray();
-      return employeesFromDB.map((employee) => ({
+      let employeesFromDB = await db.collection("employees").find().toArray();
+      const getRetirementReminder = (dob, retirementAge) => {
+        const dobDate = new Date(dob);
+        const retirementDate = new Date(dobDate.setFullYear(dobDate.getFullYear() + retirementAge));
+        const reminderDate = new Date(retirementDate.setMonth(retirementDate.getMonth() - 6));
+    
+        return reminderDate;
+    }
+      return employeesFromDB.map((employee) => {
+        const userDob = employee.dateOfBirth;
+        const currDate = new Date();
+        const retirementAge = 60;
+        const reminderDate = getRetirementReminder(userDob, retirementAge);
+        if( reminderDate < currDate) {
+          db
+          .collection("employees")
+          .updateOne({ _id: new ObjectId(employee._id) }, { $set: {
+            employeeType : "Upcoming Retirements"
+          } });
+        }     
+        return ({
         ...employee,
-        id: employee._id.toString(),
-      }));
+        id: employee._id.toString()
+      })});
     },
+
     getEmployee: async (_, { id }) => {
       const employee = await db
         .collection("employees")

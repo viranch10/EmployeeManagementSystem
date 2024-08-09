@@ -89,7 +89,9 @@ function EmployeeTable({ employeeData, onEdit, onDelete, onMoreInfo }) {
           </Tr>
         </Thead>
         <Tbody>
-          {employeeData.map((employee) => (
+          {employeeData?.length > 0 ? employeeData?.map((employee) => {           
+           return (
+            employee != null &&
             <Tr key={employee.id}>
               <Td w="150px">{employee.firstname}</Td>
               <Td w="150px">{employee.lastname}</Td>
@@ -129,7 +131,7 @@ function EmployeeTable({ employeeData, onEdit, onDelete, onMoreInfo }) {
                 </HStack>
               </Td>
             </Tr>
-          ))}
+          )}) : []}
         </Tbody>
       </Table>
     </Box>

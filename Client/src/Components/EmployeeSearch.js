@@ -22,6 +22,7 @@ function EmployeeSearch({ onFilterChange }) {
         <option value="PartTime">PartTime</option>
         <option value="Contract">Contract</option>
         <option value="Seasonal">Seasonal</option>
+        <option value="Upcoming Retirements">Upcoming Retirements</option>
       </Select>
     </Box>
   );

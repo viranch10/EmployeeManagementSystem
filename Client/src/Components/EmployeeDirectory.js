@@ -24,6 +24,7 @@ function EmployeeDirectory() {
                 id
                 firstname
                 lastname
+                dateOfBirth
                 age
                 dateOfJoining
                 title
@@ -39,6 +40,7 @@ function EmployeeDirectory() {
       const { data } = await response.json();
       setEmployeeData(data.list);
       setFilteredData(data.list);
+
     } catch (error) {
       console.error("Error fetching employee data:", error);
     }
@@ -50,7 +52,7 @@ function EmployeeDirectory() {
 
   const handleFilterChange = (filter) => {
     if (filter && filter !== "All") {
-      const filtered = employeeData.filter(
+      const filtered = employeeData?.filter(
         (employee) => employee.employeeType === filter
       );
       setFilteredData(filtered);
@@ -60,8 +62,8 @@ function EmployeeDirectory() {
   };
 
   const handleDelete = (id) => {
-    setEmployeeData(employeeData.filter((employee) => employee.id !== id));
-    setFilteredData(filteredData.filter((employee) => employee.id !== id));
+    setEmployeeData(employeeData?.filter((employee) => employee.id !== id));
+    setFilteredData(filteredData?.filter((employee) => employee.id !== id));
   };
 
   const handleEdit = (employee) => {
