@@ -31,6 +31,7 @@ const EmployeeDetails = () => {
               id
               firstname
               lastname
+              dateOfBirth
               age
               dateOfJoining
               title
@@ -69,10 +70,15 @@ const EmployeeDetails = () => {
             <HStack>
               <Text fontWeight="bold">First Name:</Text>
               <Text>{employee.firstname}</Text>
+              {console.log('employee: ', employee)}
             </HStack>
             <HStack>
               <Text fontWeight="bold">Last Name:</Text>
               <Text>{employee.lastname}</Text>
+            </HStack>
+            <HStack>
+              <Text fontWeight="bold">Date Of Birth</Text>
+              <Text>{new Date(employee.dateOfBirth).toLocaleDateString()}</Text>
             </HStack>
             <HStack>
               <Text fontWeight="bold">Age:</Text>

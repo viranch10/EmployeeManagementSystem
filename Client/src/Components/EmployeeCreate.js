@@ -16,6 +16,7 @@ const EmployeeCreate = () => {
   const [employee, setEmployee] = useState({
     firstname: "",
     lastname: "",
+    dateOfBirth: "",
     age: "",
     dateOfJoining: "",
     title: "",
@@ -31,6 +32,20 @@ const EmployeeCreate = () => {
     setEmployee((prev) => ({ ...prev, [name]: value }));
   };
 
+  const calculateAge = (dob) => {
+    const dobDate = new Date(dob);
+    const today = new Date();
+    
+    let age = today.getFullYear() - dobDate.getFullYear();
+    const monthDiff = today.getMonth() - dobDate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+        age--;
+    }
+    
+    return age;
+}
+
   const handleSave = async () => {
     try {
       const response = await fetch(url, {
@@ -44,7 +59,8 @@ const EmployeeCreate = () => {
               createEmployee(input: {
                 firstname: "${employee.firstname}",
                 lastname: "${employee.lastname}",
-                age: ${employee.age},
+                dateOfBirth: "${employee.dateOfBirth}",
+                age: ${calculateAge(employee.dateOfBirth)},
                 dateOfJoining: "${employee.dateOfJoining}",
                 title: "${employee.title}",
                 department: "${employee.department}",
@@ -92,8 +108,13 @@ const EmployeeCreate = () => {
           />
         </FormControl>
         <FormControl mt={4}>
-          <FormLabel>Age</FormLabel>
-          <Input name="age" value={employee.age} onChange={handleInputChange} />
+          <FormLabel>Date Of Birth</FormLabel>
+          <Input
+            name="dateOfBirth"
+            type="date"
+            value={employee.dateOfBirth}
+            onChange={handleInputChange}
+          />
         </FormControl>
         <FormControl mt={4}>
           <FormLabel>Date Of Joining</FormLabel>
